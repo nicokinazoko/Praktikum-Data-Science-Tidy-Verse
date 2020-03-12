@@ -1,0 +1,55 @@
+---
+title: "Untitled"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Praktikum 6
+
+
+```{r }
+library(dslabs)
+data("murders")
+```
+
+# Library Tidyverse
+
+
+```{r }
+library(tidyverse)
+```
+
+# Mutate
+
+```{r }
+murders <- mutate(murders, rate = total / population * 10^5)
+head(murders)
+```
+
+# Data Filter
+```{r }
+data_filter <- filter(murders, rate < 15, population > 10^6, region == 'West')
+data_filter
+```
+
+# Data Select
+```{r }
+data_select <- select(data_filter, state, total, rate)
+data_select
+```
+
+# Pipe
+```{r }
+murders %>% select(state, region, rate) %>% filter(rate < 10)
+```
+
+# Summarise 
+```{r }
+data_baru <- summarise(murders, rata_rata = mean(rate), standar_deviasi = sd(murders$population))
+head(data_baru)
+```
