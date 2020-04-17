@@ -14,7 +14,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r }
 library(dslabs)
+library(dplyr)
 data("murders")
+data("heights")
 ```
 
 # Library Tidyverse
@@ -52,4 +54,108 @@ murders %>% select(state, region, rate) %>% filter(rate < 10)
 ```{r }
 data_baru <- summarise(murders, rata_rata = mean(rate), standar_deviasi = sd(murders$population))
 head(data_baru)
+```
+
+## Heights
+
+# Pipe 
+```{r }
+heights %>% group_by(sex)
+
+```
+
+# Range
+
+```{r }
+murders %>% arrange(rate)
+```
+
+```{r }
+murders %>% arrange(region, desc(total))
+```
+
+# Top n
+
+```{r }
+murders %>% top_n(8, rate) %>% arrange(desc(rate))
+```
+
+
+# Tible
+```{r }
+murders %>% group_by(region) %>% class()
+```
+
+# contoh tible
+```{r }
+as_tibble(murders)$negara
+```
+
+#Membuat Tible
+```{r }
+tibble(id = c(1,2,3), func = c(mean,median,sd))
+```
+
+```{r }
+grades <- data.frame(names = c("Andi", "Budi", "Charlie"),
+exam_1 = c(80,90,100))
+```
+
+#Mengubah jadi tible
+```{r }
+as_tibble(grades)
+```
+
+# Dot Operator
+```{r }
+tab_1 <- filter(murders, region == "South")
+rates = murders$rate
+median(rates)
+```
+
+# Mutate
+```{r }
+tab_2 <- mutate(tab_1, rate = total/population * 10^5)
+median(rates)
+```
+
+# filter Rates
+```{r }
+rates <- filter(murders, region == "South") %>% mutate(rate = total/population * 10^5 ) %>% .$rate
+median(rates)
+```
+
+
+# Compute 
+```{r }
+compute_s_n <- function(n){ x <- 1:n ; sum(x)}
+n <- 1:25
+s_n <- sapply(n, compute_s_n)
+s_n
+
+```
+
+# Librarry Purr
+```{r }
+library(purrr)
+s_n <- map(n, compute_s_n)
+class(s_n)
+```
+
+# Ganti tipe data
+
+```{r }
+s_n <- map_dbl(n, compute_s_n)
+class(s_n)
+```
+
+# case when
+```{r }
+x <- c(-2, -1, 0, 1, 2)
+case_when(x < 0 ~ "Negative", x > 0 ~ "Positive", TRUE ~ "Zero")
+```
+
+# fungsi between
+```{r }
+between(1:12, 7,9)
 ```
